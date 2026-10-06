@@ -318,9 +318,9 @@ function setupInfrastructureStory() {
   gsap.set(intro, { autoAlpha: 1, yPercent: 0 });
   gsap.set(intro.querySelectorAll('[data-infra-intro-reveal]'), { autoAlpha: 1, y: 0, clipPath: 'inset(0)' });
   gsap.set(machines, { autoAlpha: 0, yPercent: 108, scale: 0.76, xPercent: 0, rotationX: 4, transformPerspective: 1200, zIndex: 1 });
-  gsap.set(machines.flatMap((machine) => [...machine.querySelectorAll('[data-infra-reveal]')]), { autoAlpha: 0, y: 28, clipPath: 'inset(0 0 100% 0)' });
+  gsap.set(machines.flatMap((machine) => [...machine.querySelectorAll('[data-infra-reveal]')]), { autoAlpha: 0, y: 22 });
   gsap.set(finale, { autoAlpha: 0, yPercent: 96, scale: 0.96, zIndex: 1 });
-  gsap.set(finale.querySelectorAll('[data-infra-finale-reveal]'), { autoAlpha: 0, y: 26, clipPath: 'inset(0 0 100% 0)' });
+  gsap.set(finale.querySelectorAll('[data-infra-finale-reveal]'), { autoAlpha: 0, y: 22 });
   gsap.set(finaleMachines, { autoAlpha: 0, yPercent: 38, scale: 0.8 });
 
   let activeScene = -1;
@@ -354,13 +354,13 @@ function setupInfrastructureStory() {
     const start = firstMachineAt + index * machineStride;
     const revealItems = machine.querySelectorAll('[data-infra-reveal]');
     timeline.fromTo(machine, { autoAlpha: 0, yPercent: 108, scale: mobileStory ? 0.88 : 0.76, xPercent: 0, rotationX: mobileStory ? 1.2 : 4, zIndex: 2 }, { autoAlpha: 1, yPercent: 0, scale: 1, xPercent: 0, rotationX: 0, zIndex: 5, duration: 0.42, ease: 'power3.out' }, start);
-    timeline.to(revealItems, { autoAlpha: 1, y: 0, clipPath: 'inset(0)', duration: 0.26, stagger: 0.065, ease: 'power2.out' }, start + 0.17);
+    timeline.to(revealItems, { autoAlpha: 1, y: 0, duration: 0.26, stagger: 0.065, ease: 'power2.out' }, start + 0.17);
     timeline.to(machine, { autoAlpha: 0, yPercent: -9, xPercent: mobileStory ? (index % 2 ? 4 : -4) : (index % 2 ? 11 : -11), scale: mobileStory ? 0.94 : 0.87, rotationX: mobileStory ? -0.4 : -1.5, zIndex: 1, duration: 0.32, ease: 'power2.in' }, start + 0.78);
   });
 
   timeline.fromTo(finale, { autoAlpha: 0, yPercent: 96, scale: 0.96, zIndex: 2 }, { autoAlpha: 1, yPercent: 0, scale: 1, zIndex: 6, duration: 0.46, ease: 'power3.out' }, finalAt);
   timeline.to(finaleMachines, { autoAlpha: 1, yPercent: 0, scale: 1, duration: 0.38, stagger: 0.075, ease: 'power2.out' }, finalAt + 0.19);
-  timeline.to(finale.querySelectorAll('[data-infra-finale-reveal]'), { autoAlpha: 1, y: 0, clipPath: 'inset(0)', duration: 0.3, stagger: 0.08, ease: 'power2.out' }, finalAt + 0.24);
+  timeline.to(finale.querySelectorAll('[data-infra-finale-reveal]'), { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.08, ease: 'power2.out' }, finalAt + 0.24);
 
   const storyTrigger = ScrollTrigger.create({
     animation: timeline,
