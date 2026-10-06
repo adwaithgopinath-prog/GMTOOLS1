@@ -255,7 +255,7 @@ function infrastructurePage() {
         <div class="infra-machine-deck">
           ${photographedMachines.map((machine, index) => `<article class="infra-machine-scene${machine.photoPlate ? ' is-photo-plate' : ''}" data-infra-machine data-infra-index="${index}" aria-hidden="true" inert>
             <div class="infra-machine-watermark" aria-hidden="true">${String(index + 1).padStart(2, '0')}</div>
-            <figure class="infra-machine-art"><span class="infra-art-registration" aria-hidden="true"></span><img src="${machine.image}" alt="${esc(machine.alt)}" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async"></figure>
+            <figure class="infra-machine-art"><span class="infra-art-registration" aria-hidden="true"></span><img src="${machine.image}" alt="${esc(machine.alt)}" loading="eager" fetchpriority="${index < 2 ? 'high' : 'auto'}" decoding="async"></figure>
             <div class="infra-machine-coordinate" aria-hidden="true"><span>X ${String(312 + index * 24).padStart(3, '0')}</span><i></i><span>Y ${String(86 + index * 17).padStart(3, '0')}</span></div>
             <div class="infra-machine-copy">
               <p class="infra-machine-step" data-infra-reveal><span>${machine.kind === 'equipment' ? 'EQUIPMENT' : 'MACHINE'} / ${String(index + 1).padStart(2, '0')}</span><span>${esc(machine.manufacturer || '—')}</span></p>
@@ -346,7 +346,7 @@ function setupInfrastructureStory() {
     progress?.setAttribute('aria-valuenow', String(Math.round(amount * 100)));
   };
 
-  const timeline = gsap.timeline({ paused: true, defaults: { ease: 'none' } });
+  const timeline = gsap.timeline({ defaults: { ease: 'none' } });
   timeline.to(intro, { autoAlpha: 0.08, yPercent: -9, duration: 0.34, ease: 'power2.in' }, 0.62);
   timeline.to(intro, { autoAlpha: 0, duration: 0.1 }, introExit);
 
@@ -362,31 +362,18 @@ function setupInfrastructureStory() {
   timeline.to(finaleMachines, { autoAlpha: 1, yPercent: 0, scale: 1, duration: 0.38, stagger: 0.075, ease: 'power2.out' }, finalAt + 0.19);
   timeline.to(finale.querySelectorAll('[data-infra-finale-reveal]'), { autoAlpha: 1, y: 0, clipPath: 'inset(0)', duration: 0.3, stagger: 0.08, ease: 'power2.out' }, finalAt + 0.24);
 
-  let syncQueued = false;
-  const syncToDocumentScroll = () => {
-    if (syncQueued) return;
-    syncQueued = true;
-    window.requestAnimationFrame(() => {
-      syncQueued = false;
-      const bounds = story.getBoundingClientRect();
-      const travel = Math.max(1, story.offsetHeight - window.innerHeight);
-      const amount = clamp(-bounds.top / travel);
-      timeline.progress(amount);
-      syncInfrastructureState(amount);
-    });
-  };
-  ScrollTrigger.create({
+  const storyTrigger = ScrollTrigger.create({
+    animation: timeline,
     trigger: story,
     start: 'top top',
     end: 'bottom bottom',
+    scrub: true,
     invalidateOnRefresh: true,
-    onUpdate: syncToDocumentScroll,
-    onRefresh: syncToDocumentScroll,
+    onUpdate: (self) => syncInfrastructureState(self.progress),
+    onRefresh: (self) => syncInfrastructureState(self.progress),
   });
-  window.addEventListener('scroll', syncToDocumentScroll, { passive: true });
-  window.addEventListener('resize', () => ScrollTrigger.refresh(), { passive: true });
   ScrollTrigger.refresh();
-  syncToDocumentScroll();
+  syncInfrastructureState(storyTrigger.progress);
 }
 
 function clientsPage() {
