@@ -803,7 +803,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .infra-machine-leader i::after { content: ''; width: 5px; height: 5px; float: right; margin-top: -2px; border-radius: 50%; background: #b33431; }
 .infra-capacity { position: absolute; z-index: 7; left: var(--page-gutter); bottom: 5.8%; display: flex; align-items: baseline; gap: 11px; color: #b33431; }
 .infra-capacity > span { align-self: flex-start; margin-top: -3px; color: rgba(23,26,25,.57); font: 7px var(--mono); letter-spacing: .1em; }
-.infra-capacity strong { font-size: clamp(83px, 15vw, 210px); font-weight: 800; line-height: .72; letter-spacing: -.105em; }
+.infra-capacity strong { display: inline-block; font-size: clamp(83px, 15vw, 210px); font-weight: 800; line-height: .72; letter-spacing: -.105em; }
 .infra-capacity b { color: rgba(23,26,25,.7); font: 8px var(--mono); letter-spacing: .12em; }
 .infra-finale-panel { z-index: 3; overflow: hidden; background: linear-gradient(116deg, #f5f6f2, #fcfcf9 70%); }
 .infra-finale-panel::before { content: ''; position: absolute; inset: 0; opacity: .42; background-image: linear-gradient(rgba(37,47,43,.075) 1px, transparent 1px), linear-gradient(90deg, rgba(37,47,43,.075) 1px, transparent 1px); background-size: 68px 68px; mask-image: linear-gradient(100deg, transparent, #000 58%); }
@@ -822,10 +822,10 @@ html.lenis.lenis-stopped { overflow: clip; }
 .infra-finale-link { position: absolute; z-index: 5; bottom: 9%; left: var(--page-gutter); display: inline-flex; align-items: center; gap: 20px; color: #171a19; font-size: 10px; font-weight: 800; }
 .infra-finale-link b { color: #b33431; font-size: 17px; }
 .infra-finale-index { position: absolute; z-index: 1; right: 3%; bottom: 2%; color: rgba(23,26,25,.06); font-size: clamp(160px, 27vw, 360px); font-weight: 800; line-height: .7; letter-spacing: -.12em; }
-.infra-stage-controls { position: absolute; z-index: 15; right: var(--page-gutter); bottom: 30px; left: var(--page-gutter); display: grid; grid-template-columns: 36px 1fr 52px; align-items: center; gap: 14px; color: rgba(23,26,25,.58); font: 7px var(--mono); letter-spacing: .1em; }
-.infra-stage-controls > span:first-child { color: #b33431; }
+.infra-stage-controls { position: absolute; z-index: 15; right: var(--page-gutter); bottom: 30px; left: var(--page-gutter); display: grid; grid-template-columns: 40px 1fr max-content; align-items: center; gap: 14px; color: rgba(23,26,25,.68); font: 8px var(--mono); letter-spacing: .1em; }
+.infra-stage-controls > span:first-child { color: #b33431; font-size: 12px; font-weight: 700; }
 .infra-stage-controls > span:last-child { text-align: right; }
-.infra-story-progress { height: 2px; background: rgba(23,26,25,.2); }
+.infra-story-progress { height: 3px; background: rgba(23,26,25,.2); }
 .infra-story-progress i { width: 100%; height: 100%; display: block; background: #b33431; transform: scaleX(0); transform-origin: left; }
 .infra-inventory { color: #f5f4ef; background: #171a1b; }
 .infra-inventory-heading { display: flex; align-items: end; justify-content: space-between; gap: 40px; margin-bottom: 48px; }
@@ -907,7 +907,8 @@ html.lenis.lenis-stopped { overflow: clip; }
   .infra-fleet-item-4 { top: 3%; right: -10%; width: 36%; height: 34%; }
   .infra-finale-link { bottom: 7%; left: 22px; max-width: 60%; font-size: 9px; }
   .infra-finale-index { bottom: 1%; font-size: 38vw; }
-  .infra-stage-controls { right: 22px; bottom: 21px; left: 22px; grid-template-columns: 26px 1fr 42px; gap: 8px; font-size: 6px; }
+  .infra-stage-controls { right: 22px; bottom: 21px; left: 22px; grid-template-columns: 26px 1fr max-content; gap: 8px; font-size: 6px; }
+  .infra-stage-controls > span:first-child { font-size: 9px; }
   .infra-inventory-heading { display: block; margin-bottom: 33px; }
   .infra-inventory-heading .display-heading { font-size: clamp(48px, 12vw, 74px); }
   .infra-inventory-heading > p { margin-top: 18px; font-size: 11px; }

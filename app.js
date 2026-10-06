@@ -263,7 +263,7 @@ function infrastructurePage() {
               <div class="infra-machine-specs" data-infra-reveal><span>MANUFACTURER</span><b>${esc(machine.manufacturer || '—')}</b>${machine.model ? `<span>MODEL</span><b>${esc(machine.model)}</b>` : ''}</div>
             </div>
             <div class="infra-machine-leader" aria-hidden="true"><span>${machine.model ? 'MODEL / ' + esc(machine.model.toUpperCase()) : 'MACHINE / ' + String(index + 1).padStart(2, '0')}</span><i></i></div>
-            <div class="infra-capacity" data-infra-reveal><span>INSTALLED QUANTITY</span><strong>${esc(machine.quantity)}</strong><b>${Number(machine.quantity) === 1 ? 'UNIT' : 'UNITS'}</b></div>
+            <div class="infra-capacity" data-infra-reveal data-infra-capacity><span>INSTALLED QUANTITY</span><strong data-infra-quantity>${esc(machine.quantity)}</strong><b>${Number(machine.quantity) === 1 ? 'UNIT' : 'UNITS'}</b></div>
           </article>`).join('')}
         </div>
         <section class="infra-finale-panel" data-infra-finale aria-hidden="true" inert>
@@ -276,7 +276,7 @@ function infrastructurePage() {
           <a class="infra-finale-link" href="#infra-inventory" data-infra-finale-reveal>View the complete equipment list <b aria-hidden="true">↓</b></a>
           <div class="infra-finale-index" aria-hidden="true">${String(photographedMachines.length).padStart(2, '0')}</div>
         </section>
-        <div class="infra-stage-controls" aria-hidden="true"><span data-infra-current>00</span><div class="infra-story-progress" role="progressbar" aria-label="Infrastructure story progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div><span>${String(photographedMachines.length).padStart(2, '0')} ITEMS</span></div>
+        <div class="infra-stage-controls" aria-hidden="true"><span data-infra-current>00</span><div class="infra-story-progress" role="progressbar" aria-label="Infrastructure story progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div><span>SCROLL / ${String(photographedMachines.length).padStart(2, '0')} MACHINES ↓</span></div>
       </div>
     </section>
     <section class="infra-inventory section-pad" id="infra-inventory"><div class="infra-inventory-heading"><div><p class="eyebrow">G M Tools / Reference</p><h2 class="display-heading">Complete equipment<br><em>inventory.</em></h2></div><p>Search the published machine list by machine name, manufacturer or quantity.</p></div>
@@ -308,17 +308,21 @@ function setupInfrastructureStory() {
   story.classList.add('has-scroll-story');
   const introExit = 0.94;
   const mobileStory = window.innerWidth <= 760;
-  const machineStride = 1.0;
+  const machineStride = mobileStory ? 1.12 : 1.24;
   const firstMachineAt = 0.7;
-  const finalAt = firstMachineAt + (machines.length - 1) * machineStride + 1.02;
+  const finalAt = firstMachineAt + (machines.length - 1) * machineStride + 1.5;
   const timelineLength = finalAt + 0.8;
   story.style.height = `${(timelineLength + 1) * 100}svh`;
   const finaleMachines = [...story.querySelectorAll('.infra-fleet-item')];
 
   gsap.set(intro, { autoAlpha: 1, yPercent: 0 });
   gsap.set(intro.querySelectorAll('[data-infra-intro-reveal]'), { autoAlpha: 1, y: 0, clipPath: 'inset(0)' });
-  gsap.set(machines, { autoAlpha: 0, yPercent: 108, scale: 0.76, xPercent: 0, rotationX: 4, transformPerspective: 1200, zIndex: 1 });
+  gsap.set(machines, { autoAlpha: 0, yPercent: 128, scale: 0.68, xPercent: 0, rotationX: 8, rotationY: 0, transformPerspective: 1200, zIndex: 1 });
   gsap.set(machines.flatMap((machine) => [...machine.querySelectorAll('[data-infra-reveal]')]), { autoAlpha: 0, y: 22 });
+  const machineImages = machines.map((machine) => machine.querySelector('.infra-machine-art img'));
+  const quantities = machines.map((machine) => machine.querySelector('[data-infra-quantity]'));
+  gsap.set(machineImages, { scale: 0.94, yPercent: 10 });
+  gsap.set(quantities, { autoAlpha: 0, scale: 0.58, y: 70, rotationX: -24, transformPerspective: 700, transformOrigin: '50% 100%' });
   gsap.set(finale, { autoAlpha: 0, yPercent: 96, scale: 0.96, zIndex: 1 });
   gsap.set(finale.querySelectorAll('[data-infra-finale-reveal]'), { autoAlpha: 0, y: 22 });
   gsap.set(finaleMachines, { autoAlpha: 0, yPercent: 38, scale: 0.8 });
@@ -352,10 +356,18 @@ function setupInfrastructureStory() {
 
   machines.forEach((machine, index) => {
     const start = firstMachineAt + index * machineStride;
-    const revealItems = machine.querySelectorAll('[data-infra-reveal]');
-    timeline.fromTo(machine, { autoAlpha: 0, yPercent: 108, scale: mobileStory ? 0.88 : 0.76, xPercent: 0, rotationX: mobileStory ? 1.2 : 4, zIndex: 2 }, { autoAlpha: 1, yPercent: 0, scale: 1, xPercent: 0, rotationX: 0, zIndex: 5, duration: 0.42, ease: 'power3.out' }, start);
-    timeline.to(revealItems, { autoAlpha: 1, y: 0, duration: 0.26, stagger: 0.065, ease: 'power2.out' }, start + 0.17);
-    timeline.to(machine, { autoAlpha: 0, yPercent: -9, xPercent: mobileStory ? (index % 2 ? 4 : -4) : (index % 2 ? 11 : -11), scale: mobileStory ? 0.94 : 0.87, rotationX: mobileStory ? -0.4 : -1.5, zIndex: 1, duration: 0.32, ease: 'power2.in' }, start + 0.78);
+    const revealItems = machine.querySelectorAll('[data-infra-reveal]:not([data-infra-capacity])');
+    const capacity = machine.querySelector('[data-infra-capacity]');
+    const quantity = machine.querySelector('[data-infra-quantity]');
+    const side = index % 2 ? 1 : -1;
+    timeline.fromTo(machine, { autoAlpha: 0, yPercent: mobileStory ? 116 : 130, scale: mobileStory ? 0.84 : 0.67, xPercent: mobileStory ? 0 : side * -8, rotationX: mobileStory ? 2 : 8, rotationY: mobileStory ? 0 : side * -3, zIndex: 2 }, { autoAlpha: 1, yPercent: 0, scale: 1, xPercent: 0, rotationX: 0, rotationY: 0, zIndex: 5, duration: mobileStory ? 0.5 : 0.58, ease: 'power3.out' }, start);
+    timeline.to(machineImages[index], { scale: 1.06, yPercent: -5, duration: 0.86, ease: 'none' }, start + 0.05);
+    timeline.to(revealItems, { autoAlpha: 1, y: 0, duration: 0.34, stagger: 0.08, ease: 'power2.out' }, start + 0.28);
+    timeline.to(capacity, { autoAlpha: 1, y: 0, duration: 0.27, ease: 'power2.out' }, start + 0.5);
+    timeline.to(quantity, { autoAlpha: 1, scale: 1.08, y: 0, rotationX: 0, duration: 0.32, ease: 'back.out(1.6)' }, start + 0.52);
+    timeline.to(quantity, { scale: 1, duration: 0.12, ease: 'power1.out' }, start + 0.84);
+    timeline.to(machine, { autoAlpha: 0.42, yPercent: -13, xPercent: mobileStory ? side * 4 : side * 17, scale: mobileStory ? 0.92 : 0.8, rotationX: mobileStory ? -1 : -5, rotationY: mobileStory ? 0 : side * 4, zIndex: 2, duration: 0.25, ease: 'power2.in' }, start + 1.02);
+    timeline.to(machine, { autoAlpha: 0, yPercent: -25, scale: mobileStory ? 0.88 : 0.68, duration: 0.17, ease: 'power1.in' }, start + 1.27);
   });
 
   timeline.fromTo(finale, { autoAlpha: 0, yPercent: 96, scale: 0.96, zIndex: 2 }, { autoAlpha: 1, yPercent: 0, scale: 1, zIndex: 6, duration: 0.46, ease: 'power3.out' }, finalAt);
