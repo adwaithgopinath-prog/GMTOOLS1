@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light;
+  color-scheme: only light;
   --ink: #191b1c;
   --ink-soft: #252829;
   --paper: #eeede8;
@@ -139,8 +139,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .category-info h3 { margin: 0; font-size: clamp(24px, 3vw, 42px); line-height: 1.15; letter-spacing: -.07em; transition: transform .25s ease; }
 .category-row:hover .category-info h3 { transform: translateX(5px); }
 .category-info p { max-width: 500px; margin: 8px 0 0; color: #696d6c; font-size: 11px; }
-.category-image { width: 100%; height: 118px; overflow: hidden; background: #f4f3ef; }
-.category-image img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transform: scale(.96); transition: transform .4s cubic-bezier(.2,.7,.3,1); }
+.category-image { width: 100%; height: 118px; overflow: hidden; background: #fff; }
+.category-image img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: normal; transform: scale(.96); transition: transform .4s cubic-bezier(.2,.7,.3,1); }
 .category-row:hover .category-image img, .category-row:focus-visible .category-image img { transform: scale(1.1); }
 .category-arrow { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--red); font-size: 18px; transition: transform .2s ease, color .2s ease, background .2s ease; }
 .category-row:hover .category-arrow { color: white; background: var(--red); transform: rotate(45deg); }
@@ -224,9 +224,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .catalog-card:hover { transform: translateY(-5px); background: white; }
 .catalog-card[hidden] { display: none; }
 .catalog-card-link { display: block; height: 100%; }
-.catalog-image { height: clamp(190px, 22vw, 310px); position: relative; overflow: hidden; background: #deddd7; }
+.catalog-image { height: clamp(190px, 22vw, 310px); position: relative; overflow: hidden; background: #fff; }
 .catalog-image::after { content: ''; position: absolute; inset: 0; border: 1px solid rgba(25,27,28,.08); pointer-events: none; }
-.catalog-image img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; transition: transform .5s cubic-bezier(.2,.7,.3,1); }
+.catalog-image img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: normal; transition: transform .5s cubic-bezier(.2,.7,.3,1); }
 .catalog-card:nth-child(2) .catalog-image img, .catalog-card:nth-child(3) .catalog-image img, .catalog-card:nth-child(4) .catalog-image img, .catalog-card:nth-child(5) .catalog-image img, .catalog-card:nth-child(6) .catalog-image img { object-fit: contain; }
 .catalog-card:hover .catalog-image img { transform: scale(1.06); }
 .catalog-index { position: absolute; top: 14px; left: 14px; padding: 5px 8px; color: white; background: rgba(25,27,28,.8); font: 8px var(--mono); }
@@ -242,9 +242,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 .product-overview { background: var(--paper); }
 .product-overview-grid { display: grid; grid-template-columns: minmax(280px, .92fr) minmax(360px, 1fr); align-items: center; gap: clamp(45px, 9vw, 142px); margin-top: 54px; }
-.product-overview-image { min-height: 430px; position: relative; display: grid; place-items: center; overflow: hidden; background: #e5e4de; }
+.product-overview-image { min-height: 430px; position: relative; display: grid; place-items: center; overflow: hidden; background: #fff; }
 .product-overview-image::before { content: ''; width: min(72%, 440px); aspect-ratio: 1; position: absolute; border: 1px solid rgba(25,27,28,.16); border-radius: 50%; box-shadow: 0 0 0 25px rgba(25,27,28,.025), 0 0 0 64px rgba(25,27,28,.02); }
-.product-overview-image img { position: relative; z-index: 1; width: 96%; max-height: 450px; object-fit: contain; mix-blend-mode: multiply; }
+.product-overview-image img { position: relative; z-index: 1; width: 96%; max-height: 450px; object-fit: contain; mix-blend-mode: normal; }
 .product-image-label { position: absolute; z-index: 2; left: 16px; bottom: 15px; color: #626664; font: 8px var(--mono); letter-spacing: .1em; }
 .product-overview-copy .eyebrow { margin-bottom: 24px; }
 .product-overview-copy .display-heading { font-size: clamp(50px, 6vw, 88px); }
